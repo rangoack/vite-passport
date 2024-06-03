@@ -72,7 +72,7 @@ const en = {
 	genesis: 'Genesis',
 	confirmTransaction: 'Confirm Transaction',
 	toAddress: 'To Address',
-	comment: 'Comment',
+	comment: 'Memo',
 	accounts: 'Accounts',
 	transaction: 'Transaction',
 	deriveAddress: 'Derive Address',

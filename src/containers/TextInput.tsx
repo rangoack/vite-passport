@@ -114,7 +114,6 @@ const TextInput = ({
 				}
 			>
 				{label}
-				{optional && ' (?)'}
 			</label>
 			<Tag
 				id={id}
