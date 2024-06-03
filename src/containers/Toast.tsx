@@ -13,7 +13,7 @@ import { State } from '../utils/types';
 type Props = State;
 
 const colors = {
-	success: '#85C787',
+	success: '#00BEFF',
 	warning: '#fed54d',
 	error: '#FE8863',
 	info: '#62ABEC',
@@ -89,7 +89,7 @@ const Toast = ({ setState, toast }: Props) => {
 									aboveToast ? 0 : Math.max(0, minShowTime - (Date.now() - enterDate))
 								);
 							}}
-							className={`shadow-md w-full fx pointer-events-auto backdrop-blur bg-skin-middleGround dark:bg-skin-base relative pl-3 pr-3 py-2 rounded-sm overflow-hidden transition-all duration-300 ${
+							className={`shadow-md w-full fx pointer-events-auto backdrop-blur bg-white relative pl-3 pr-3 py-2 rounded-xl overflow-hidden transition-all duration-300 ${
 								animationStage === 0
 									? 'scale-90 -translate-y-2 opacity-0'
 									: animationStage === 1
@@ -106,7 +106,7 @@ const Toast = ({ setState, toast }: Props) => {
 								style={{ background: colors[colorKey] }}
 							/>
 							<Icon className="w-[1.5rem] min-w-[1.5rem]" style={{ fill: colors[colorKey] }} />
-							<p className="mx-1.5 z-10">{makeReadable(toast[0])}</p>
+							<p className="mx-1.5 z-10 text-black">{makeReadable(toast[0])}</p>
 						</div>
 					)}
 				</div>,

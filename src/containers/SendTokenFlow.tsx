@@ -51,71 +51,75 @@ const SendTokenFlow = ({
 			<Modal
 				fullscreen
 				onClose={onClose}
-				className="flex flex-col p-4 pt-0"
+				className="flex flex-col"
 				heading={`${i18n.send} ${addIndexToTokenSymbol(
 					selectedToken.symbol,
 					selectedToken.tokenIndex
 				)}`}
 				// subheading={selectedToken?.tokenAddress}
 			>
-				<div className="flex-1 space-y-4 overflow-scroll">
-					<TokenCard {...selectedToken} />
-					{/* <div className="">
-						<p className="leading-5 text-skin-secondary">{i18n.from}</p>
-						<p className="break-words text-sm">{contacts[activeAccount.address]}</p>
-						<p className="break-words text-sm">{activeAccount.address}</p>
-					</div> */}
-					{/* <div className="">
-						<p className="leading-5 text-skin-secondary">
-							{i18n.quotaAvailable} / {i18n.quotaLimit}
-						</p>
-						<p className="">
-							{10} / {10} Quota
-						</p>
-					</div> */}
-					<TextInput
-						_ref={toAddressRef}
-						label={i18n.toAddress}
-						getIssue={(v) => {
-							if (!wallet.isValidAddress(v)) {
-								return i18n.invalidAddress;
-							}
-						}}
-					/>
-					<TextInput
-						numeric
-						_ref={amountRef}
-						maxDecimals={selectedToken.decimal}
-						label={i18n.amount}
-						getIssue={(v) => {
-							if (+v > +selectedTokenBalance!) {
-								return i18n.insufficientFunds;
-							}
-						}}
-					/>
-					<TextInput optional _ref={commentRef} label={i18n.comment} />
+				<div className="flex-1 overflow-scroll">
+					<div className="flex flex-col gap-y-4 pt-4 px-5">
+						<TokenCard {...selectedToken} />
+						{/* <div className="">
+							<p className="leading-5 text-skin-secondary">{i18n.from}</p>
+							<p className="break-words text-sm">{contacts[activeAccount.address]}</p>
+							<p className="break-words text-sm">{activeAccount.address}</p>
+						</div> */}
+						{/* <div className="">
+							<p className="leading-5 text-skin-secondary">
+								{i18n.quotaAvailable} / {i18n.quotaLimit}
+							</p>
+							<p className="">
+								{10} / {10} Quota
+							</p>
+						</div> */}
+						<TextInput
+							_ref={toAddressRef}
+							label={i18n.toAddress}
+							getIssue={(v) => {
+								if (!wallet.isValidAddress(v)) {
+									return i18n.invalidAddress;
+								}
+							}}
+						/>
+						<TextInput
+							numeric
+							_ref={amountRef}
+							maxDecimals={selectedToken.decimal}
+							label={i18n.amount}
+							getIssue={(v) => {
+								if (+v > +selectedTokenBalance!) {
+									return i18n.insufficientFunds;
+								}
+							}}
+						/>
+						<TextInput optional _ref={commentRef} label={i18n.comment} />
+					</div>
 				</div>
-				<Button
-					theme="highlight"
-					label={i18n.next}
-					onClick={() => {
-						const valid = validateInputs([toAddressRef, amountRef, commentRef]);
-						if (valid && balanceInfoMap) {
-							unsentBlockSet(
-								accountBlock.createAccountBlock('send', {
-									address: activeAccount.address,
-									toAddress: toAddressRef.value.trim(),
-									tokenId: selectedToken.tokenAddress,
-									amount: toSmallestUnit(
-										amountRef.value,
-										balanceInfoMap[selectedToken.tokenAddress]?.tokenInfo?.decimals
-									),
-									data: btoa(commentRef.value),
-								})
-							);
-						}
-					}}
-				/>
+				<div className="px-5">
+					<Button
+						theme="white"
+						label={i18n.next}
+						onClick={() => {
+							const valid = validateInputs([toAddressRef, amountRef, commentRef]);
+							if (valid && balanceInfoMap) {
+								unsentBlockSet(
+									accountBlock.createAccountBlock('send', {
+										address: activeAccount.address,
+										toAddress: toAddressRef.value.trim(),
+										tokenId: selectedToken.tokenAddress,
+										amount: toSmallestUnit(
+											amountRef.value,
+											balanceInfoMap[selectedToken.tokenAddress]?.tokenInfo?.decimals
+										),
+										data: btoa(commentRef.value),
+									})
+								);
+							}
+						}}
+					/>
+				</div>
 			</Modal>
 			{unsentBlock && (
 				<TransactionModal

@@ -23,25 +23,25 @@ const ModalListItem = ({
 	onX,
 }: Props) => {
 	return (
-		<div className="flex items-center">
+		<div className="flex items-center px-8 pt-5">
 			<button
-				className={`p-4 fx w-full ${base ? 'bg-skin-base' : 'bg-skin-middleground'} ${className}`}
+				className={`fx w-full ${base ? 'bg-skin-base' : 'bg-white'} ${className}`}
 				onClick={onClick}
 			>
-				{radio && <Checkbox disabled radio value={active} />}
+				{radio && <Checkbox theme='highlight' disabled radio value={active} />}
 				<div className={`text-left flex-1 ${radio ? 'ml-4' : ''}`}>
-					<p className="leading-4">{label}</p>
+					<p className="text-sm text-black font-bold">{label}</p>
 					{sublabel && (
-						<p className="mt-1 leading-4 text-sm font-medium text-skin-secondary">{sublabel}</p>
+						<p className="text-sm font-normal text-black">{sublabel}</p>
 					)}
 				</div>
 			</button>
 			{onX && (
 				<button
-					className="xy w-8 h-8 mr-2 overflow-hidden rounded-full bg-skin-middleground"
+					className="xy w-8 h-8 mr-2 overflow-hidden rounded-full"
 					onClick={onX}
 				>
-					<XIcon className="w-5 text-skin-eye-icon" />
+					<XIcon className="w-5 text-black" />
 				</button>
 			)}
 		</div>

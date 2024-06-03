@@ -1,8 +1,10 @@
-import { ArrowNarrowLeftIcon, PlusIcon } from '@heroicons/react/solid';
+import { PlusIcon } from '@heroicons/react/solid';
+import { ChevronLeftIcon } from '@heroicons/react/outline';
 import { ReactNode, useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom';
 import { useKeyPress } from '../utils/hooks';
 import Spinner from './Spinner';
+import PageBackground from './PageBackground';
 
 type Props = {
 	fullscreen?: boolean;
@@ -15,6 +17,7 @@ type Props = {
 	children: ReactNode;
 	className?: string;
 	buttonText?: string;
+	buttonTextColor?: string;
 	plusIcon?: boolean;
 	noBackArrow?: boolean;
 	onButtonClick?: () => void;
@@ -32,6 +35,7 @@ const Modal = ({
 	className,
 	plusIcon,
 	buttonText,
+	buttonTextColor = 'text-black',
 	onButtonClick,
 	spinner,
 	bottom,
@@ -59,7 +63,7 @@ const Modal = ({
 	return ReactDOM.createPortal(
 		<div
 			ref={modalRef}
-			className="z-10 h-full w-full fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm overflow-scroll"
+			className="z-10 h-full w-full fixed inset-0 bg-white bg-opacity-10 backdrop-blur-sm overflow-scroll"
 			onClick={() => {
 				!mouseDraggingModal.current && onClose();
 				mouseDraggingModal.current = false;
@@ -70,23 +74,25 @@ const Modal = ({
 					<Spinner />
 				</div>
 			) : fullscreen ? (
-				<div
-					onClick={(e) => e.stopPropagation()}
-					className="flex flex-col w-full h-full bg-skin-base"
-				>
-					<div className="xy flex-col h-12">
-						{!noBackArrow && (
-							<button className="absolute left-3 w-8 h-8 xy" onClick={onClose}>
-								<ArrowNarrowLeftIcon className="w-5 text-skin-back-arrow-icon" />
-							</button>
-						)}
-						{heading && <p className="text-lg leading-3">{heading}</p>}
+				<PageBackground padding='py-6'>
+					<div
+						onClick={(e) => e.stopPropagation()}
+						className="flex flex-col w-full h-full"
+					>
+						<div className="xy h-9 px-5">
+							{!noBackArrow && (
+								<button className="w-6 xy" onClick={onClose}>
+									<ChevronLeftIcon className="size-4" />
+								</button>
+							)}
+							{heading && <p className="grow pr-9 text-lg text-center font-bold">{heading}</p>}
+						</div>
 						{subheading && (
-							<p className="mt-1 text-center leading-3 text-xs text-skin-secondary">{subheading}</p>
+							<p className="text-center h-5 text-xs text-white">{subheading}</p>
 						)}
+						<div className={`flex-1 ${className}`}>{children}</div>
 					</div>
-					<div className={`flex-1 ${className}`}>{children}</div>
-				</div>
+				</PageBackground>
 			) : bottom ? (
 				<div onClick={(e) => e.stopPropagation()} className="h-full flex flex-col">
 					<div className="flex-1" onClick={onClose} />
@@ -95,27 +101,27 @@ const Modal = ({
 			) : (
 				<div className="min-h-full flex flex-col">
 					<div className="flex-1 min-h-[3rem]" />
-					<div className="flex justify-center">
+					<div className="flex justify-center overflow-visible">
 						<div
-							className={`bg-skin-middleground w-full max-w-full mx-8 rounded-sm shadow-md ${className}`}
+							className={`bg-white w-full max-w-full mx-5 rounded-3xl shadow-t-2`}
 							onClick={(e) => e.stopPropagation()}
 							onMouseDown={() => (mouseDraggingModal.current = true)}
 							onMouseUp={() => (mouseDraggingModal.current = false)}
 						>
 							{!noHeader && (
-								<div className="xy h-12 border-b-2 border-skin-divider">
-									<p className="text-lg text-center leading-4">{heading}</p>
+								<div className="xy h-12 border-b border-skin-highlight">
+									<p className="text-lg text-center leading-4 text-black font-bold">{heading}</p>
 									{subheading && (
-										<p className="mt-1 text-center leading-3 text-xs text-skin-secondary">
+										<p className="mt-1 text-center leading-3 text-xs text-black">
 											{subheading}
 										</p>
 									)}
 								</div>
 							)}
-							{children}
+							<div className={className}>{children}</div>
 							{buttonText && (
 								<button
-									className={`h-12 px-2 w-full text-skin-lowlight border-t-2 border-skin-divider ${
+									className={`h-12 px-2 w-full ${buttonTextColor} text-lg font-bold border-t border-skin-highlight ${
 										plusIcon ? 'fx' : 'xy'
 									}`}
 									onClick={onButtonClick}

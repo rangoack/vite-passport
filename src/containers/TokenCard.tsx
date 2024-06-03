@@ -40,25 +40,25 @@ const TokenCard = ({
 	const unitPrice = useMemo(() => prices?.[normalizeTokenName(name)]?.usd, [prices, name]);
 
 	return (
-		<Tag className="fx rounded-sm w-full px-4 py-3 shadow bg-skin-middleground" onClick={onClick}>
+		<Tag className="fx rounded-xl w-full px-3 py-4 mb-3 bg-white shadow-t-2" onClick={onClick}>
 			{!icon ? (
 				<DeterministicIcon tti={tti} className="h-10 w-10 rounded-full" />
 			) : (
 				<img
 					src={icon}
 					alt={addIndexToTokenSymbol(symbol, tokenIndex)}
-					className="h-10 w-10 rounded-full bg-gradient-to-tr from-skin-eye-icon to-skin-bg-base"
+					className="h-10 w-10 rounded-full"
 				/>
 			)}
 			<div className="ml-4 flex-1 flex">
 				<div className="flex flex-col flex-1 items-start">
-					<p className="text-lg">{addIndexToTokenSymbol(symbol, tokenIndex)}</p>
-					<p className="text-sm text-skin-tertiary font-medium">{shortenTti(tti)}</p>
+					<p className="text-lg text-black font-normal">{addIndexToTokenSymbol(symbol, tokenIndex)}</p>
+					<p className="text-xs text-black font-normal">{shortenTti(tti)}</p>
 				</div>
 				<div className="flex flex-col items-end mr-1.5">
-					<p className="text-lg">{biggestUnit === null ? '...' : biggestUnit}</p>
+					<p className="text-lg text-black font-normal">{biggestUnit === null ? '...' : biggestUnit}</p>
 					{currencyConversion && (
-						<p className="text-sm text-skin-secondary font-medium">
+						<p className="text-xs text-black font-normal">
 							{!prices || biggestUnit === null
 								? '...'
 								: !unitPrice

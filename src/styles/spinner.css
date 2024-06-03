@@ -19,10 +19,10 @@
 	display: block;
 	fill: transparent;
 	@apply stroke-skin-lowlight;
-	stroke-linecap: round;
+	strokeLinecap: round;
 	stroke-dasharray: 283;
 	stroke-dashoffset: 280;
-	stroke-width: 10px;
+	strokeWidth: 10px;
 	transform-origin: 50% 50%;
 }
 

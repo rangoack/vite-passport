@@ -9,6 +9,7 @@ import { decrypt } from '../utils/encryption';
 import { connect } from '../utils/global-context';
 import { validateInputs } from '../utils/misc';
 import { State } from '../utils/types';
+import PageBackground from '../components/PageBackground';
 // import { accountBlock } from '@vite/vitejs'
 // console.log('accountBlock:', accountBlock)
 
@@ -54,30 +55,32 @@ const Lock = ({
 	]);
 
 	return (
-		<div className="p-4 h-full flex flex-col">
-			<div className="flex-1 xy flex-col">
-				<ViteLogo size={150} className="text-skin-primary" />
+		<PageBackground className='blue2green'>
+			<div className="h-full flex flex-col">
+				<div className="flex-1 xy flex-col">
+					<ViteLogo size={200} className="text-skin-primary" />
+				</div>
+				<TextInput
+					password
+					autoFocus
+					_ref={passwordRef}
+					label={i18n.password}
+					onKeyDown={(key) => {
+						if (key === 'Enter') {
+							attemptUnlock();
+						}
+					}}
+				/>
+				<Button theme="white" className="mt-4" label={i18n.unlock} onClick={attemptUnlock} />
+				<button
+					className="mt-5 text-white text-lg font-bold self-center"
+					onClick={() => resettingWalletSet(true)}
+				>
+					{i18n.resetWallet}
+				</button>
+				{resettingWallet && <ResetWalletModal onClose={() => resettingWalletSet(false)} />}
 			</div>
-			<TextInput
-				password
-				autoFocus
-				_ref={passwordRef}
-				label={i18n.password}
-				onKeyDown={(key) => {
-					if (key === 'Enter') {
-						attemptUnlock();
-					}
-				}}
-			/>
-			<Button theme="highlight" className="mt-4" label={i18n.unlock} onClick={attemptUnlock} />
-			<button
-				className="mt-1 text-skin-highlight self-center"
-				onClick={() => resettingWalletSet(true)}
-			>
-				{i18n.resetWallet}
-			</button>
-			{resettingWallet && <ResetWalletModal onClose={() => resettingWalletSet(false)} />}
-		</div>
+		</PageBackground>
 	);
 };
 

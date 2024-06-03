@@ -31,7 +31,7 @@ const Connect = ({
 		<div className="h-full flex flex-col">
 			<div className="fy p-4 bg-skin-middleground">
 				<p className="text-lg text-center">{i18n.vitePassportIsLinking}</p>
-				<div className="mt-2 px-4 py-3 bg-skin-base rounded-full">
+				<div className="mt-2 px-5 py-3 bg-skin-base rounded-full">
 					<p className="leading-3 text-lg break-words">{hostname}</p>
 				</div>
 			</div>

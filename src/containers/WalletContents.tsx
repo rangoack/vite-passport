@@ -1,4 +1,3 @@
-import { DocumentDuplicateIcon } from '@heroicons/react/outline';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import Button from '../components/Button';
 import Checkbox from '../components/Checkbox';
@@ -23,6 +22,7 @@ import TextInput, { useTextInputRef } from './TextInput';
 import TokenCard from './TokenCard';
 import TokenSearchBar from './TokenSearchBar';
 import TransactionList from './TransactionList';
+import CopyOutline from '../assets/copy';
 
 const searchTokenApiInfo = debounceAsync<TokenApiInfo[]>((rpcURL: string, query: string) => {
 	if (!query) {
@@ -114,7 +114,7 @@ const WalletContents = ({
 				{homePageTokens && (
 					<>
 						{!homePageTokens.length ? (
-							<p className="text-center text-skin-secondary">{i18n.yourWalletIsEmpty}</p>
+							<p className="text-center text-slate-300 mb-5">{i18n.yourWalletIsEmpty}</p>
 						) : (
 							homePageTokens.map((tokenApiInfo) => (
 								<TokenCard
@@ -125,7 +125,7 @@ const WalletContents = ({
 							))
 						)}
 						<button
-							className="mx-auto block text-skin-highlight leading-3"
+							className="mx-auto block text-black text-sm"
 							onClick={() => {
 								const checkedTokens: { [tti: string]: boolean } = {};
 								homePageTokenIdsAndNames.forEach(([tti]) => (checkedTokens[tti] = true));
@@ -147,7 +147,7 @@ const WalletContents = ({
 					fullscreen
 					heading={i18n.editTokenList}
 					onClose={() => editingTokenListSet(false)}
-					className="flex flex-col"
+					className="flex flex-col px-5"
 				>
 					<TokenSearchBar
 						onUserInput={(v) => {
@@ -155,7 +155,7 @@ const WalletContents = ({
 							if (availableTokens) {
 								availableTokensSet(undefined);
 							}
-							if (!v) {
+						if (!v) {
 								availableTokensSet([
 									...homePageTokens!,
 									...defaultTokenList.filter(({ tokenAddress }) => !checkedTokens[tokenAddress]),
@@ -163,75 +163,75 @@ const WalletContents = ({
 							}
 						}}
 					/>
-					<div className="flex-1 overflow-scroll mt-4">
+					<div className="flex-1 overflow-scroll mt-6">
 						<FetchWidget
 							shouldFetch={!availableTokens}
 							getPromise={() => searchTokenApiInfo(activeNetwork.rpcUrl, editTokenQuery)}
 							onResolve={(list: TokenApiInfo[]) => availableTokensSet(list)}
-						>
+							>
 							{availableTokens &&
 								(!availableTokens.length ? (
 									<div className="xy min-h-8">
-										<p className="text-skin-secondary text-center">{i18n.nothingFound}</p>
+										<p className="text-white text-center">{i18n.nothingFound}</p>
 									</div>
-								) : (
-									availableTokens.map((tokenApiInfo, i) => {
-										const {
-											symbol,
-											// name,
-											tokenAddress: tti,
-											tokenIndex,
-											icon,
-											// decimal,
-											// gatewayInfo,
-										} = tokenApiInfo;
-										// newlyAddedTokens
-										const tokenName = addIndexToTokenSymbol(symbol, tokenIndex);
-										return (
-											<React.Fragment key={tti}>
-												{(i === 0 || i === homePageTokenIdsAndNames.length) && (
-													<div className={`h-0.5 bg-skin-divider mx-4 ${i === 0 ? '' : 'mt-2'}`} />
-												)}
-												<div className="fx rounded-sm py-2 px-4">
-													{!icon ? (
-														<DeterministicIcon tti={tti} className="h-8 w-8 rounded-full mr-2" />
-													) : (
-														<img
-															src={icon}
-															alt={tokenName}
-															className="h-8 w-8 rounded-full mr-2 overflow-hidden bg-gradient-to-tr from-skin-eye-icon to-skin-bg-base"
-														/>
+									) : (
+										availableTokens.map((tokenApiInfo, i) => {
+											const {
+												symbol,
+												// name,
+												tokenAddress: tti,
+												tokenIndex,
+												icon,
+												// decimal,
+												// gatewayInfo,
+												} = tokenApiInfo;
+											// newlyAddedTokens
+											const tokenName = addIndexToTokenSymbol(symbol, tokenIndex);
+											return (
+												<React.Fragment key={tti}>
+													{(i === 0 || i === homePageTokenIdsAndNames.length) && (
+														<div className={`h-px bg-white`} />
 													)}
-													<div className="flex-1 fx">
-														<div className="flex flex-col flex-1 items-start">
-															<p className="text-lg">{tokenName}</p>
-															<p className="text-xs text-skin-tertiary">{tti}</p>
-														</div>
-														<Checkbox
-															radio
-															value={checkedTokens[tti]}
-															onUserInput={(checked) => {
+													<div className="fx rounded-sm py-2">
+														{!icon ? (
+															<DeterministicIcon tti={tti} className="h-8 w-8 rounded-full mr-2" />
+															) : (
+																<img
+																	src={icon}
+																	alt={tokenName}
+																	className="h-8 w-8 rounded-full mr-2 overflow-hidden bg-white"
+																/>
+														)}
+														<div className="flex-1 fx">
+															<div className="flex flex-col flex-1 items-start">
+																<p className="text-sm font-normal">{tokenName}</p>
+																<p className="text-xs text-white font-normal">{tti}</p>
+															</div>
+															<Checkbox
+																radio
+																value={checkedTokens[tti]}
+																onUserInput={(checked) => {
 																checkedTokens[tti] = checked;
 																checkedTokensSet({ ...checkedTokens });
-															}}
-														/>
+																}}
+															/>
+														</div>
 													</div>
-												</div>
-											</React.Fragment>
-										);
-									})
-								))}
+												</React.Fragment>
+											);
+										})
+							))}
 						</FetchWidget>
 					</div>
-					<div className="flex gap-4 p-4 shadow z-50">
-						<Button theme="white" label={i18n.cancel} onClick={() => editingTokenListSet(false)} />
+					<div className="flex gap-4 z-50 mt-4">
+						<Button theme="lowlight" label={i18n.cancel} onClick={() => editingTokenListSet(false)} />
 						<Button
-							theme="highlight"
+							theme="white"
 							label={i18n.confirm}
 							onClick={async () => {
 								const displayedTokenIds = Object.entries(checkedTokens)
-									.filter(([, checked]) => checked)
-									.map(([tti]) => tti);
+								.filter(([, checked]) => checked)
+							.map(([tti]) => tti);
 								const data: Pick<State, 'homePageTokenIdsAndNames'> = {
 									homePageTokenIdsAndNames: (
 										await getTokenApiInfo(activeNetwork.rpcUrl, displayedTokenIds)
@@ -243,6 +243,7 @@ const WalletContents = ({
 							}}
 						/>
 					</div>
+
 				</Modal>
 			)}
 			{selectedToken && (
@@ -254,12 +255,12 @@ const WalletContents = ({
 					subheading={selectedToken.tokenAddress}
 				>
 					<div className="flex-1">
-						<TransactionList tti={selectedToken.tokenAddress} />
+						<TransactionList tti={selectedToken.tokenAddress} padding='px-5 pb-4' />
 					</div>
-					<div className="fx p-4 gap-4 shadow">
-						<Button theme="white" onClick={() => sendingFundsSet(true)} label={i18n.send} />
+					<div className="fx gap-4 px-5 pt-3">
+						<Button theme="lowlight" onClick={() => sendingFundsSet(true)} label={i18n.send} />
 						<Button
-							theme="highlight"
+							theme="white"
 							onClick={() => receivingFundsSet(true)}
 							label={i18n.receive}
 						/>
@@ -267,27 +268,22 @@ const WalletContents = ({
 				</Modal>
 			)}
 			{receivingFunds && (
-				<Modal bottom onClose={() => receivingFundsSet(false)} className="flex flex-col">
+				<Modal noHeader onClose={() => receivingFundsSet(false)}>
 					{!!selectedToken && (
-						<div className="flex-1 p-4 space-y-4">
-							<div className="xy gap-2 px-4 py-3 bg-skin-base rounded-full">
-								<p className="text-lg">{shortenAddress(activeAccount.address)}</p>
+						<div className="flex flex-col gap-y-4 p-4">
+							<div className="xy gap-2 px-4 py-1.5 border border-skin-highlight rounded-full">
+								<p className="text-sm text-skin-highlight">{shortenAddress(activeAccount.address)}</p>
 								<button
 									className="p-1.5 -m-1.5 xy"
 									onClick={() => copyWithToast(activeAccount.address)}
 								>
-									<DocumentDuplicateIcon className="w-5 text-skin-back-arrow-icon" />
+									<CopyOutline size="16" />
 								</button>
 							</div>
-							{/* https://docs.vite.org/vite-docs/vep/vep-6.html */}
-							<QR
-								data={`vite:${activeAddress}${toQueryString({
-									amount,
-									tti: selectedToken.tokenAddress,
-									data: btoa(comment).replace(/=+$/, ''),
-								})}`}
-							/>
+							<QR data={`vite:${activeAccount.address}`}/>
+
 							<TextInput
+								theme='black'
 								optional
 								numeric
 								_ref={amountRef}
@@ -297,6 +293,7 @@ const WalletContents = ({
 								onUserInput={(v) => amountSet(v)}
 							/>
 							<TextInput
+								theme='black'
 								optional
 								_ref={commentRef}
 								label={i18n.comment}

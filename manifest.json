@@ -3,9 +3,16 @@
 	"name": "Vite Passport",
 	"version": "1.0.5",
 	"icons": {
-		"1024": "src/assets/logo-blue-1024.png"
+		"16": "src/assets/16.png",
+    "32": "src/assets/32.png",
+    "48": "src/assets/48.png",
+    "128": "src/assets/128.png"
 	},
 	"action": {
+		"default_icon": {
+			"16": "src/assets/16.png",
+			"32": "src/assets/32.png"
+		},
 		"default_title": "Vite Passport",
 		"default_popup": "popup.html"
 	},

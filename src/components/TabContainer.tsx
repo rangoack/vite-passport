@@ -1,15 +1,11 @@
-import {
-	CreditCardIcon as OutlineCreditCardIcon,
-	BookOpenIcon as OutlineBookOpenIcon,
-	CogIcon as OutlineCogIcon,
-} from '@heroicons/react/outline';
-import {
-	CreditCardIcon as SolidCreditCardIcon,
-	BookOpenIcon as SolidBookOpenIcon,
-	CogIcon as SolidCogIcon,
-} from '@heroicons/react/solid';
 import { ReactNode } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import BookOpenSolid from "../assets/bookOpenSolid";
+import BookOpenOutline from "../assets/bookOpenOutline";
+import WalletSolid from "../assets/walletSolid";
+import WalletOutline from "../assets/walletOutline";
+import SettingsSolid from "../assets/settingsSolid";
+import SettingsOutline from "../assets/settingsOutline";
 
 type Props = {
 	children: ReactNode;
@@ -23,17 +19,17 @@ const TabContainer = ({ heading, children }: Props) => {
 	return (
 		<div className="h-full flex flex-col">
 			{heading && (
-				<div className="h-12 xy">
-					<p className="text-lg">{heading}</p>
+				<div className="h-9 xy">
+					<p className="text-lg font-bold">{heading}</p>
 				</div>
 			)}
 			<div className="top-0 flex-1 flex flex-col">{children}</div>
 			{/* <div className="top-0 flex-1 overflow-scroll bg-white">{null}</div> */}
-			<div className="h-10 flex shadow-lg shadow-white">
+			<div className="h-[4.35rem] rounded-t-[24px] flex shadow-t-2 bg-white">
 				{[
-					['/home', OutlineCreditCardIcon, SolidCreditCardIcon],
-					['/my-transactions', OutlineBookOpenIcon, SolidBookOpenIcon],
-					['/settings', OutlineCogIcon, SolidCogIcon],
+					['/home', WalletOutline, WalletSolid],
+					['/my-transactions', BookOpenOutline, BookOpenSolid],
+					['/settings', SettingsOutline, SettingsSolid],
 				].map(([to, OutlineIcon, SolidIcon]) => {
 					const active = pathname === to;
 					const Icon = active ? SolidIcon : OutlineIcon;
@@ -41,10 +37,10 @@ const TabContainer = ({ heading, children }: Props) => {
 						<button
 							key={to as string}
 							disabled={active}
-							className={`flex-1 xy ${active ? 'text-skin-highlight' : 'text-skin-secondary'}`}
+							className={`flex-1 xy ${active ? 'text-skin-lowlight' : 'text-skin-highlight'}`}
 							onClick={() => navigate(to as string, { replace: true })}
 						>
-							<Icon className="h-6 w-6 text-inherit" />
+							<Icon />
 						</button>
 					);
 				})}

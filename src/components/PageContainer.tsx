@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
-import { ArrowNarrowLeftIcon } from '@heroicons/react/solid';
+import { ChevronLeftIcon } from '@heroicons/react/outline';
 import { useNavigate } from 'react-router-dom';
+import PageBackground from '../components/PageBackground';
 
 type Props = {
 	heading?: string;
@@ -8,18 +9,20 @@ type Props = {
 	className?: string;
 };
 
-const PageContainer = ({ heading, children, className }: Props) => {
+const PageContainer = ({ heading, children, className='grid-rows-[1fr_auto]' }: Props) => {
 	const navigate = useNavigate();
 	return (
-		<div className="h-full flex flex-col ">
-			<div className="xy w-full h-12">
-				<p className="text-lg">{heading}</p>
-				<button className="absolute left-3 w-8 xy" onClick={() => navigate(-1)}>
-					<ArrowNarrowLeftIcon className="w-5 text-skin-back-arrow-icon" />
-				</button>
+		<PageBackground>
+			<div className="h-full flex flex-col overflow-visible">
+				<div className="xy w-full h-12">
+					<button className="flex-none w-6 xy" onClick={() => navigate(-1)}>
+						<ChevronLeftIcon className="size-4" />
+					</button>
+					<p className="grow text-center text-lg font-bold">{heading}</p>
+				</div>
+				<div className={`h-full overflow-visible grid ${className}`}>{children}</div>
 			</div>
-			<div className={`flex-1 p-4 pt-0 flex flex-col z-10 ${className}`}>{children}</div>
-		</div>
+		</PageBackground>
 	);
 };
 

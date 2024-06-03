@@ -3,22 +3,22 @@ type Props = {
 	label: string;
 	className?: string;
 	disabled?: boolean;
-	theme: 'white' | 'highlight' | 'foreground';
+	theme: 'white' | 'highlight' | 'lowlight' | 'foreground';
 };
 
-const Button = ({ onClick, label, disabled, theme = 'highlight', className }: Props) => {
+const Button = ({ onClick, label, disabled, theme = 'highlight', className = '' }: Props) => {
 	return (
 		<button
 			disabled={disabled}
-			className={`h-10 w-full xy rounded-sm ${
-				disabled
-					? 'bg-skin-foreground text-skin-eye-icon'
-					: {
-							white: 'bg-white text-skin-lowlight',
-							highlight: 'bg-skin-highlight text-white',
-							foreground: 'bg-skin-foreground text-skin-lowlight',
-					  }[theme]
-			} ${className}`}
+			className={`h-12 w-full xy rounded-xl text-lg font-bold
+			${disabled && 'disabled:opacity-50 disabled:cursor-not-allowed'}
+			${({
+					white: 'bg-white text-black',
+					highlight: 'bg-skin-highlight text-white',
+					lowlight: 'bg-skin-lowlight text-black',
+					foreground: 'bg-skin-foreground text-skin-lowlight',
+				}[theme])}
+			${className}`}
 			onClick={onClick}
 		>
 			{label}

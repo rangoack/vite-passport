@@ -24,64 +24,67 @@ const Import = ({ i18n, sendBgScriptPortMessage, setState }: State) => {
 	const confirmPasswordRef = useTextInputRef();
 
 	return (
-		<PageContainer heading={i18n.importWallet} className="gap-4">
-			<TextInput
-				textarea
-				autoFocus
-				_ref={mnemonicRef}
-				label={i18n.mnemonicPhrase}
-				inputClassName="h-44"
-				getIssue={(v) => {
-					if (!wallet.validateMnemonics(v)) {
-						return i18n.invalidMnemonicPhrase;
-					}
-				}}
-			/>
-			<TextInput password showPasswordRequirements _ref={passwordRef} label={i18n.password} />
-			<TextInput password _ref={confirmPasswordRef} label={i18n.confirmPassword} />
-			{/* <p className="mt-1 text-skin-tertiary text-sm">{i18n.mustContainAtLeast8Characters}</p> */}
-			<div className="fx">
-				<Checkbox value={agreesToTerms} onUserInput={(v) => agreesToTermsSet(v)} />
-				<p className="text-skin-tertiary text-xs">
-					{i18n.iHaveReadAndAgreeToThe}{' '}
-					<A href="https://vite.org/terms.html" className="text-skin-lowlight">
-						{i18n.termsOfUse}
-					</A>
-				</p>
-			</div>
-			<div className="flex-1"></div>
-			<Button
-				theme="highlight"
-				label={i18n.next}
-				disabled={!agreesToTerms}
-				onClick={async () => {
-					let valid = validateInputs([mnemonicRef, passwordRef, confirmPasswordRef]);
-					if (passwordRef.value !== confirmPasswordRef.value) {
-						confirmPasswordRef.error = i18n.passwordsDoNotMatch;
-						valid = false;
-					}
-					if (valid) {
-						const secrets = { mnemonics: mnemonicRef.value.trim() };
-						sendBgScriptPortMessage({ secrets, type: 'updateSecrets' });
-						const encryptedSecrets = await encrypt(JSON.stringify(secrets), passwordRef.value);
-						const account: AddressObj = wallet.deriveAddress({
-							...secrets,
-							index: 0,
-						});
-						const derivedAddresses = [account.address];
-						const contacts = { [account.address]: 'Account 0' };
-						setValue({ encryptedSecrets, derivedAddresses, contacts });
-						setState({
-							secrets,
-							encryptedSecrets,
-							derivedAddresses,
-							contacts,
-							activeAccount: account,
-						});
-						navigate(state.routeAfterUnlock || '/home');
-					}
-				}}
-			/>
+		<PageContainer heading={i18n.importWallet}>
+			<section>
+				<TextInput
+					textarea
+					autoFocus
+					_ref={mnemonicRef}
+					label={i18n.mnemonicPhrase}
+					inputClassName="h-44"
+					getIssue={(v) => {
+						if (!wallet.validateMnemonics(v)) {
+							return i18n.invalidMnemonicPhrase;
+						}
+					}}
+				/>
+				<TextInput password showPasswordRequirements _ref={passwordRef} label={i18n.password} containerClassName='mt-4' />
+				<TextInput password _ref={confirmPasswordRef} label={i18n.confirmPassword} containerClassName='mt-4' />
+				{/* <p className="mt-1 text-skin-tertiary text-sm">{i18n.mustContainAtLeast8Characters}</p> */}
+				<div className="fx mt-4">
+					<Checkbox value={agreesToTerms} onUserInput={(v) => agreesToTermsSet(v)} />
+					<p className="text-white text-xs">
+						{i18n.iHaveReadAndAgreeToThe}{' '}
+						<A href="https://vite.org/terms.html" className="text-white">
+							{i18n.termsOfUse}
+						</A>
+					</p>
+				</div>
+			</section>
+			<section>
+				<Button
+					theme="white"
+					label={i18n.next}
+					disabled={!agreesToTerms}
+					onClick={async () => {
+						let valid = validateInputs([mnemonicRef, passwordRef, confirmPasswordRef]);
+						if (passwordRef.value !== confirmPasswordRef.value) {
+							confirmPasswordRef.error = i18n.passwordsDoNotMatch;
+							valid = false;
+						}
+						if (valid) {
+							const secrets = { mnemonics: mnemonicRef.value.trim() };
+							sendBgScriptPortMessage({ secrets, type: 'updateSecrets' });
+							const encryptedSecrets = await encrypt(JSON.stringify(secrets), passwordRef.value);
+							const account: AddressObj = wallet.deriveAddress({
+								...secrets,
+								index: 0,
+							});
+							const derivedAddresses = [account.address];
+							const contacts = { [account.address]: 'Account 0' };
+							setValue({ encryptedSecrets, derivedAddresses, contacts });
+							setState({
+								secrets,
+								encryptedSecrets,
+								derivedAddresses,
+								contacts,
+								activeAccount: account,
+							});
+							navigate(state.routeAfterUnlock || '/home');
+						}
+					}}
+				/>
+			</section>
 		</PageContainer>
 	);
 };

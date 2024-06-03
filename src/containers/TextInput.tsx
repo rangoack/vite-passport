@@ -43,6 +43,7 @@ type Props = State &
 		getIssue?: (value: string) => string | void;
 		onKeyDown?: (key: string) => void;
 		compact?: boolean;
+		theme?: 'white' | 'black';
 	};
 
 const normalizeNumericInput = (str: string, decimals: number, removeInsignificantZeros = false) => {
@@ -82,6 +83,7 @@ const TextInput = ({
 	getIssue = () => '',
 	onKeyDown,
 	_ref,
+	theme = 'white'
 }: Props) => {
 	const input = useRef<HTMLInputElement | HTMLTextAreaElement | null>();
 	const [internalValue, internalValueSet] = useState(initialValue || '');
@@ -90,6 +92,9 @@ const TextInput = ({
 	const [visible, visibleSet] = useState(false);
 	const id = useMemo(() => label.toLowerCase().replace(/\s+/g, '-'), [label]);
 	const Tag = useMemo(() => (textarea ? 'textarea' : 'input'), [textarea]);
+	const textColor = theme === 'white' ? 'text-white' : 'text-black';
+	const bgColor = theme === 'white' ? 'bg-skin-highlight' : 'bg-black';
+	const borderColor = theme === 'white' ? 'bg-white' : 'bg-black';
 
 	return (
 		<div className={`relative ${error ? 'pb-0.5' : ''} ${containerClassName}`}>
@@ -105,7 +110,7 @@ const TextInput = ({
 						  } 
 							${focused ? 'text-skin-highlight' : 'text-skin-input-label'} 
 							text-skin-input-label ${textarea ? 'bg-skin-middleground' : ''}`
-						: `text-skin-input-label font-medium text-lg ${textarea ? '' : ''}`
+						: `${textColor} font-normal text-lg ${textarea ? '' : ''}`
 				}
 			>
 				{label}
@@ -127,7 +132,7 @@ const TextInput = ({
 									? 'border-skin-lowlight shadow-md'
 									: 'shadow ' + (error ? 'border-skin-error' : 'border-skin-divider')
 						  } ${resizable ? 'resize-y' : 'resize-none'} ${inputClassName}`
-						: `w-full bg-transparent text-xl font-medium ${textarea ? 'h-24' : 'h-8'} ${
+						: `w-full bg-transparent ${textColor} text-lg ${textarea ? 'h-24 font-bold' : 'h-8'} ${
 								resizable ? 'resize-y' : 'resize-none'
 						  } ${password ? 'pr-8' : ''}`
 				}
@@ -205,7 +210,7 @@ const TextInput = ({
 				<button
 					className={`absolute ${
 						compact ? 'right-3 top-4' : 'right-0 top-8'
-					} h-8 w-8 p-1.5 -m-1.5 transition duration-200 ${
+					} h-7 w-7 p-1 transition duration-200 ${
 						focused ? 'text-skin-lowlight' : 'text-skin-eye-icon'
 					}`}
 					onMouseDown={(e) => e.preventDefault()}
@@ -217,15 +222,15 @@ const TextInput = ({
 						}, 0);
 					}}
 				>
-					{visible ? <EyeOffIcon className="text-inherit" /> : <EyeIcon className="text-inherit" />}
+					{visible ? <EyeIcon className={textColor} /> : <EyeOffIcon className={textColor} />}
 				</button>
 			)}
 			{!compact && (
-				<div className={`h-0.5 duration-200 ${focused ? 'bg-skin-lowlight' : 'bg-skin-divider'}`} />
+				<div className={`h-px duration-200 ${borderColor}`} />
 			)}
-			{error && <p className="mt-1 text-sm leading-3 font-bold text-red-500">{error}</p>}
+			{error && <p className="inline-block mt-1 p-[1px] text-sm leading-3 font-normal text-white bg-[#ff0062]">{error}</p>}
 			{showPasswordRequirements && (
-				<p className="mt-1 text-xs text-skin-tertiary">
+				<p className={ `mt-1 text-xs font-normal ${textColor}` }>
 					{i18n.mustContainAtLeast8Characters1UppercaseLetterAnd1Number}
 				</p>
 			)}

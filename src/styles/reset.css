@@ -5,7 +5,7 @@
 body,
 #root {
 	-webkit-font-smoothing: antialiased;
-	@apply bg-skin-base h-[35rem] w-[calc(10/16*35rem)] text-base overflow-scroll;
+	@apply h-[37rem] w-[calc(0.5625*37rem)] text-base overflow-scroll;
 }
 
 body {
@@ -59,4 +59,29 @@ div {
 }
 div::-webkit-scrollbar {
 	display: none; /* Chrome, Safari, Opera */
+}
+
+.green2blue{
+	background: linear-gradient(210deg, #00FF95, #00BEFF 70%);
+}
+
+.blue2green{
+	background: linear-gradient(30deg, #00FF95, #00BEFF 70%);
+}
+
+.green2blue > section,
+.blue2green > section {
+	background-image: url("../assets/curve.png");
+	background-size: contain;
+	background-repeat: no-repeat;
+}
+
+.radial-green2blue {
+	background: radial-gradient(circle at top, #00FF95 0%, #00BEFF 100%);
+}
+.radial-green2blue > div {
+	background-image: url("../assets/curve-home.png");
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: top right;
 }

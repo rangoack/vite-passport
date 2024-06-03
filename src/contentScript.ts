@@ -3,8 +3,6 @@ import { getHostname, prefixName } from './utils/strings';
 import { injectedScriptEventData } from './utils/types';
 import { getValue, setValue } from './utils/storage';
 
-console.log('content');
-
 // Can the window object be modified from a Chrome extension? [duplicate]
 // https://stackoverflow.com/questions/12395722/can-the-window-object-be-modified-from-a-chrome-extension
 

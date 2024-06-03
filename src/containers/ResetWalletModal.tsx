@@ -39,7 +39,7 @@ const ResetWalletModal = ({
 				});
 			}}
 		>
-			<p className="m-3">{i18n.youAreAboutToErase}</p>
+			<p className="m-8 text-black text-sm font-light">{i18n.youAreAboutToErase}</p>
 		</Modal>
 	);
 };

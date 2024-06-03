@@ -12,6 +12,7 @@ import { State } from '../utils/types';
 
 type Props = State & {
 	tti?: string;
+	padding?: string;
 };
 
 const FETCH_AMOUNT = 10;
@@ -24,6 +25,7 @@ const TransactionList = ({
 	transactionHistory,
 	viteBalanceInfo,
 	tti,
+	padding = 'px-5 pb-4'
 }: Props) => {
 	const [txInfoModalTx, txInfoModalTxSet] = useState<undefined | Transaction>();
 	const [ttiEndReached, ttiEndReachedSet] = useState(false);
@@ -51,7 +53,7 @@ const TransactionList = ({
 	);
 
 	return (
-		<div className="flex-1 overflow-scroll px-4 pb-4 space-y-4">
+		<div className={`flex-1 overflow-scroll ${padding}`}>
 			<FetchWidget
 				shouldFetch={!transactions && !!viteApi}
 				getPromise={() => {
@@ -102,7 +104,7 @@ const TransactionList = ({
 				}}
 			>
 				{!transactions ? null : !transactions.length ? (
-					<p className="text-skin-secondary text-center">{i18n.noTransactionHistory}</p>
+					<p className="text-white text-sm font-normal text-center">{i18n.noTransactionHistory}</p>
 				) : (
 					transactions.map((tx, i) => {
 						const Icon =
@@ -114,7 +116,7 @@ const TransactionList = ({
 							// hide unreceived txs when viewing specific tokens (i.e. `tti` is truthy)
 							<React.Fragment key={tx.hash}>
 								{!tti && !!transactionHistory?.unreceived?.length && i === 0 && (
-									<p className="leading-3">
+									<p className="text-sm font-normal">
 										{viteBalanceInfo!.unreceived.blockCount} {i18n.unreceived}
 									</p>
 								)}
@@ -122,7 +124,7 @@ const TransactionList = ({
 									<>
 										{!allUnreceivedTxsLoaded && (
 											<button
-												className="mx-auto block text-skin-lowlight font-medium leading-3"
+												className="mx-auto block text-sm text-white mt-3"
 												onClick={async () => {
 													const additionalTxs = await viteApi.request(
 														'ledger_getUnreceivedBlocksByAddress',
@@ -138,38 +140,38 @@ const TransactionList = ({
 											</button>
 										)}
 										{!!transactionHistory.unreceived?.length && (
-											<div className="h-0.5 bg-skin-divider"></div>
+											<div className="h-px bg-white"></div>
 										)}
-										<p className="leading-3">
+										<p className="text-sm font-normal">
 											{viteBalanceInfo!.balance.blockCount} {i18n.received}
 										</p>
 									</>
 								)}
 								<button
-									className="fx text-sm rounded w-full px-3 py-2.5 shadow bg-skin-middleground"
+									className="fx text-sm rounded-xl w-full mt-3 p-3 shadow-t-2 bg-white"
 									onClick={() => txInfoModalTxSet(tx)}
 								>
 									<div className="flex-1 flex justify-between">
 										<div className="fx">
-											<div className="h-5 w-5 rounded-full xy bg-skin-lowlight">
+											<div className="h-5 w-5 rounded-full xy bg-gradient-to-r from-skin-highlight to-skin-lowlight">
 												<Icon className="text-white w-4" />
 											</div>
-											<p className="ml-2">
+											<p className="ml-2 text-sm text-black font-normal">
 												{toBiggestUnit(tx.amount!, +tx.tokenInfo!.decimals)}{' '}
 												{tx.tokenInfo!.tokenSymbol}
 											</p>
 										</div>
 										<div className="flex flex-col items-end font-medium">
-											<p className="text-skin-secondary">
+											<p className="text-xs text-black font-normal">
 												{shortenAddress(tx.blockType === 4 ? tx.fromAddress! : tx.toAddress!)}
 											</p>
-											<p className="text-skin-tertiary">{formatDate(+tx.timestamp!)}</p>
+											<p className="text-xs text-black font-normal">{formatDate(+tx.timestamp!)}</p>
 										</div>
 									</div>
 								</button>
 								{!allReceivedTxsLoaded && i === transactions.length - 1 && (
 									<button
-										className="mx-auto block text-skin-lowlight font-medium leading-3"
+										className="mx-auto block mt-3 text-sm text-white"
 										onClick={async () => {
 											if (tti) {
 												const currentList = transactionHistory?.[tti];

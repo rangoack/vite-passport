@@ -1,4 +1,3 @@
-import { DocumentDuplicateIcon, ExternalLinkIcon } from '@heroicons/react/outline';
 import AccountBlockClass from '@vite/vitejs/distSrc/accountBlock/accountBlock';
 import { Transaction } from '@vite/vitejs/distSrc/accountBlock/type';
 import { AccountBlockBlock } from '@vite/vitejs/distSrc/utils/type';
@@ -18,6 +17,8 @@ import A from './A';
 import Button from './Button';
 import DeterministicIcon from './DeterministicIcon';
 import Modal from './Modal';
+import CopyOutline from '../assets/copy';
+import ShareOutline from '../assets/share';
 
 type Props = State & {
 	thirdPartyTx?: boolean;
@@ -42,13 +43,13 @@ const Field = ({
 }) =>
 	!value ? null : (
 		<div className="fx">
-			<p className="leading-5 font-medium">
-				<span className="text-skin-secondary">{label}: </span>
+			<p className="text-sm text-black">
+				<span className="font-normal">{label}: </span>
 				{format ? format(value) : value}
 			</p>
 			{!!format && (
 				<button className="ml-2" onClick={!onCopy ? undefined : () => onCopy(value)}>
-					<DocumentDuplicateIcon className="w-5 text-skin-tertiary" />
+					<CopyOutline size="16" />
 				</button>
 			)}
 		</div>
@@ -116,9 +117,9 @@ const TransactionModal = ({
 					noBackArrow={thirdPartyTx}
 					heading={unsentBlock ? i18n.confirmTransaction : i18n.transaction}
 					onClose={() => onBack && onBack()}
-					className="flex flex-col"
+					className="flex flex-col px-5"
 				>
-					<div className="flex-1 px-4">
+					<div className="flex-1">
 						<FetchWidget
 							shouldFetch={!!tokenId && !tokenApiInfo}
 							getPromise={() => getTokenApiInfo(activeNetwork.rpcUrl, tokenId!)}
@@ -143,13 +144,13 @@ const TransactionModal = ({
 											}[blockType!]
 										}
 									</p>
-									<div className="flex flex-col mt-4 gap-4 p-4 bg-skin-middleground">
+									<div className="flex flex-col mt-7 gap-1 p-3 bg-white rounded-3xl">
 										<Field label={i18n.network} value={activeNetwork.name} />
 										<Field label={i18n.rpcUrl} value={activeNetwork.rpcUrl} />
 										<div className="fx">
 											<div className="fx">
-												<p className="leading-5 break-words font-medium">
-													<span className="text-skin-secondary">{i18n.token}: </span>
+												<p className="leading-5 break-words font-medium text-black">
+													<span className="font-normal">{i18n.token}: </span>
 													{tokenName}
 												</p>
 												{!tokenApiInfo?.icon ? (
@@ -159,7 +160,7 @@ const TransactionModal = ({
 														src={tokenApiInfo?.icon}
 														// alt={tokenApiInfo.symbol}
 														alt={tokenName}
-														className="h-5 w-5 rounded-full ml-2 overflow-hidden bg-gradient-to-tr from-skin-eye-icon to-skin-bg-base"
+														className="h-5 w-5 rounded-full ml-2 overflow-hidden"
 													/>
 												)}
 											</div>
@@ -203,12 +204,12 @@ const TransactionModal = ({
 									</div>
 									{hash && (
 										<A
-											className="fx self-center mt-5"
+											className="fx self-center mt-5 text-sm"
 											// OPTIMIZE: Make this URL more flexible for different network URLs
 											href={`${activeNetwork.explorerUrl}/tx/${hash}`}
 										>
-											<p className="text-skin-lowlight">{i18n.viewOnViteScan}</p>
-											<ExternalLinkIcon className="w-6 ml-1 mr-2 text-skin-lowlight" />
+											<p className="text-white mr-1">{i18n.viewOnViteScan}</p>
+											<ShareOutline size='16' className='stroke-white'/>
 										</A>
 									)}
 								</>
@@ -216,14 +217,14 @@ const TransactionModal = ({
 						</FetchWidget>
 					</div>
 					{!!unsentBlock && (
-						<div className="flex p-4 gap-4">
+						<div className="flex gap-4">
 							{sentTx ? (
-								<Button theme="highlight" label={i18n.close} onClick={onCloseAfterSend!} />
+								<Button theme="white" label={i18n.close} onClick={onCloseAfterSend!} />
 							) : (
 								<>
-									<Button theme="foreground" label={i18n.cancel} onClick={onCancel!} />
+									<Button theme="lowlight" label={i18n.cancel} onClick={onCancel!} />
 									<Button
-										theme="highlight"
+										theme="white"
 										label={i18n.confirm}
 										onClick={async () => {
 											try {

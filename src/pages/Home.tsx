@@ -1,14 +1,10 @@
 import {
-	CreditCardIcon,
-	DocumentDuplicateIcon,
 	DownloadIcon,
 	UploadIcon,
 } from '@heroicons/react/outline';
-import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { wallet } from '@vite/vitejs';
 import { AddressObj } from '@vite/vitejs/distSrc/utils/type';
 import { useEffect, useMemo, useState } from 'react';
-import ViteLogo from '../assets/ViteLogo';
 import A from '../components/A';
 import Button from '../components/Button';
 import Modal from '../components/Modal';
@@ -31,6 +27,9 @@ import {
 	validateWsUrl,
 } from '../utils/strings';
 import { State, Storage, TokenApiInfo } from '../utils/types';
+import WalletOutline from "../assets/walletOutline";
+import CopyOutline from '../assets/copy';
+import ShareOutline from '../assets/share';
 
 // constant.Contracts.StakeForQuota_V1
 // constant.Contracts.StakeForQuota
@@ -96,68 +95,80 @@ const Home = ({
 
 	return (
 		<TabContainer>
-			<div className="bg-skin-middleground shadow-md z-10 p-4">
-				<div className="fx absolute top-3">
-					<div className="h-8 w-8 xy rounded-full text-white bg-gradient-to-br from-[#1944c5] to-[#60b2ed]">
-						<ViteLogo noText size={16} />
-					</div>
-					<div className="flex flex-col items-start ml-2.5">
-						<button
-							className="mt-0.5 p-1 text-sm text-skin-secondary leading-3"
-							onClick={() => editingNetworkSet(true)}
-						>
-							{activeNetwork.name}
-						</button>
-						<button
-							disabled={!connected}
-							className="p-1 fx"
-							onClick={() => viewingConnectedSet(true)}
-						>
-							<div
-								className={`h-2 w-2 rounded-full ${
-									connected ? 'bg-skin-connected-green' : 'bg-skin-eye-icon'
-								}`}
-							/>
-							<p className="ml-1 text-xs text-skin-tertiary leading-3">
-								{connected ? i18n.connected : i18n.disconnected}
-							</p>
-						</button>
-					</div>
-				</div>
-				<button
-					className="absolute p-1 -m-1 right-5"
-					onClick={() => changingActiveAccountSet(true)}
-				>
-					<CreditCardIcon className="w-6 text-skin-unchecked-checkbox" />
-				</button>
-				<div className="fy xy mt-12">
-					<p className="text-skin-secondary">{contacts[activeAccount.address]}</p>
-					<div className="flex rounded-full bg-skin-base gap-2 py-2 px-4">
-						<p className="text-sm">{shortenAddress(activeAccount.address)}</p>
-						<button className="p-1 -m-1 xy" onClick={() => copyWithToast(activeAccount.address)}>
-							<DocumentDuplicateIcon className="w-4 text-skin-back-arrow-icon" />
-						</button>
-						{activeNetwork.explorerUrl && (
-							<A
-								className="p-1 -m-1 xy"
-								href={`${activeNetwork.explorerUrl}/address/${activeAccount.address}`}
+			<section className="radial-green2blue z-10 rounded-b-[24px]">
+				<div className="pt-8 px-5 pb-2.5">
+					<div className="grid grid-cols-[32px_1fr_32px] gap-4">
+						<div className="h-9 w-9 p-1 bg-white rounded-full">
+							<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 85 82" fill="none">
+								<path d="M29.7804 21.7397L12.3104 9.05973C6.20038 4.62973 -1.82962 11.2097 1.36038 18.0497C9.30038 35.0197 18.8504 55.4997 22.2604 63.0697L33.9804 37.9397C36.6404 32.2297 34.8804 25.4397 29.7704 21.7297L29.7804 21.7397Z" fill="url(#paint0_linear_1708_12762)" />
+								<path d="M71.3307 4.50992L83.3307 30.0399C86.0007 35.7099 84.1807 42.4699 79.0407 46.0599L29.9107 80.3399C26.8407 82.4799 22.9207 79.1899 24.5007 75.8099L57.8307 4.51993C60.5007 -1.19007 68.6507 -1.20008 71.3307 4.50992Z" fill="url(#paint1_linear_1708_12762)" />
+								<defs>
+									<linearGradient id="paint0_linear_1708_12762" x1="8.21038" y1="38.8097" x2="32.7504" y2="24.5897" gradientUnits="userSpaceOnUse">
+										<stop stopColor="#00BEFF" />
+										<stop offset="1" stopColor="#00FF95" />
+									</linearGradient>
+									<linearGradient id="paint1_linear_1708_12762" x1="13.2007" y1="59.4299" x2="80.5707" y2="20.4099" gradientUnits="userSpaceOnUse">
+										<stop stopColor="#00BEFF" />
+										<stop offset="1" stopColor="#00FF95" />
+									</linearGradient>
+								</defs>
+							</svg>
+						</div>
+						<div>
+							<button
+								className="text-sm text-white font-bold"
+								onClick={() => editingNetworkSet(true)}
 							>
-								<ExternalLinkIcon className="w-4 text-skin-back-arrow-icon" />
-							</A>
-						)}
+								{activeNetwork.name}
+							</button>
+							<button
+								disabled={!connected}
+								className="fx"
+								onClick={() => viewingConnectedSet(true)}
+							>
+								<div
+									className={`h-2 w-2 rounded-full ${
+										connected ? 'bg-skin-lowlight' : 'bg-white'
+									}`}
+								/>
+								<p className="ml-1 text-xs text-white font-normal">
+									{connected ? i18n.connected : i18n.disconnected}
+								</p>
+							</button>
+						</div>
+						<button onClick={() => changingActiveAccountSet(true)}>
+							<WalletOutline className="stroke-white" />
+						</button>
+					</div>
+					<div className="xy flex-col mt-6">
+						<p className="text-white text-lg font-bold mb-1">{contacts[activeAccount.address]}</p>
+						<div className="flex rounded-full bg-white gap-2 py-1.5 px-4">
+							<p className="text-sm text-skin-highlight font-bold">{shortenAddress(activeAccount.address)}</p>
+							<button className="xy" onClick={() => copyWithToast(activeAccount.address)}>
+								<CopyOutline size="16" />
+							</button>
+							{activeNetwork.explorerUrl && (
+								<A
+									className="xy"
+									href={`${activeNetwork.explorerUrl}/address/${activeAccount.address}`}
+								>
+									<ShareOutline size="16" />
+								</A>
+							)}
+						</div>
 					</div>
 				</div>
-			</div>
-			<div className="flex-1 p-4 space-y-4 overflow-scroll">
+			</section>
+			<section className="flex-1 px-5 my-4 overflow-scroll">
 				{currencyConversion && (
-					<p className="text-3xl text-center">
+					<p className="text-4xl text-center text-black mb-6">
 						{portfolioValue !== undefined ? formatPrice(portfolioValue, 1, '$') : '...'}
 					</p>
 				)}
-				<div className="xy gap-16">
+				<div className="xy gap-16 mb-6">
 					<div className="fy">
 						<button
-							className="h-14 w-14 bg-skin-middleground xy rounded-full"
+							className="h-14 w-14 xy rounded-full bg-gradient-to-t from-[#C3F0FF] to-white to-84%"
 							onClick={async () => {
 								if (balanceInfoMap) {
 									sendingSet(true);
@@ -172,23 +183,22 @@ const Home = ({
 								}
 							}}
 						>
-							<UploadIcon className="w-8" />
+							<UploadIcon className="w-8 text-skin-highlight" />
 						</button>
-						<p>{i18n.send}</p>
+						<p className='text-black text-lg font-bold mt-2'>{i18n.send}</p>
 					</div>
 					<div className="fy">
 						<button
-							className="h-14 w-14 bg-skin-middleground xy rounded-full"
+							className="h-14 w-14 xy rounded-full bg-gradient-to-t from-[#C3F0FF] to-white to-84%"
 							onClick={() => receivingSet(true)}
 						>
-							<DownloadIcon className="w-8" />
+							<DownloadIcon className="w-8 text-skin-highlight" />
 						</button>
-						<p>{i18n.receive}</p>
+						<p className='text-black text-lg font-bold mt-2'>{i18n.receive}</p>
 					</div>
 				</div>
-				<div className="h-0.5 bg-skin-divider" />
 				<WalletContents />
-			</div>
+			</section>
 			{/* <Modal
 				visible={votingModalOpen}
 				onClose={() => votingModalOpenSet(false)}
@@ -218,7 +228,9 @@ const Home = ({
 				<Modal
 					onClose={() => editingNetworkSet(false)}
 					heading={i18n.networks}
+					className='pb-5'
 					buttonText={i18n.addNetwork}
+					buttonTextColor='text-skin-highlight'
 					onButtonClick={() => {
 						editingNetworkSet(false);
 						addingNetworkSet(true);
@@ -236,14 +248,14 @@ const Home = ({
 								onClick={() => {
 									if (!active) {
 										toastSuccess(i18n.networkChanged);
-										setState({
+									setState({
 											activeNetworkIndex: i,
 											activeNetwork: networkList[i],
 											viteBalanceInfo: undefined,
 											transactionHistory: undefined,
 											homePageTokens: undefined,
 										});
-										setValue({ activeNetworkIndex: i });
+									setValue({ activeNetworkIndex: i });
 										triggerInjectedScriptEvent({
 											type: 'networkChange',
 											payload: { activeNetwork: network },
@@ -255,15 +267,15 @@ const Home = ({
 									i < 3
 										? undefined
 										: () => {
-												const newNetworkList = [...networkList];
-												newNetworkList.splice(i, 1);
-												const data = {
-													networkList: newNetworkList,
-													activeNetworkIndex: i === networkList.length - 1 ? 0 : activeNetworkIndex,
-												};
-												setState(data);
-												setValue(data);
-										  }
+											const newNetworkList = [...networkList];
+											newNetworkList.splice(i, 1);
+											const data = {
+												networkList: newNetworkList,
+												activeNetworkIndex: i === networkList.length - 1 ? 0 : activeNetworkIndex,
+											};
+										setState(data);
+										setValue(data);
+									}
 								}
 							/>
 						);
@@ -301,8 +313,9 @@ const Home = ({
 					}}
 				>
 					<div className="space-y-3 p-3">
-						<TextInput _ref={networkNameRef} label={i18n.networkName} />
+						<TextInput theme='black' _ref={networkNameRef} label={i18n.networkName} />
 						<TextInput
+							theme='black'
 							_ref={rpcUrlRef}
 							label={i18n.rpcUrl}
 							getIssue={(v) => {
@@ -312,6 +325,7 @@ const Home = ({
 							}}
 						/>
 						<TextInput
+							theme='black'
 							optional
 							_ref={blockExplorerUrlRef}
 							label={i18n.blockExplorerUrl}
@@ -329,8 +343,10 @@ const Home = ({
 				<Modal
 					plusIcon
 					heading={i18n.accounts}
+					className='pb-5'
 					onClose={() => changingActiveAccountSet(false)}
 					buttonText={i18n.deriveAddress}
+					buttonTextColor='text-skin-highlight'
 					onButtonClick={() => {
 						const newAccount: AddressObj = wallet.deriveAddress({
 							...secrets!,
@@ -417,13 +433,13 @@ const Home = ({
 			)}
 			{receiving && (
 				<Modal noHeader onClose={() => receivingSet(false)} className="p-4">
-					<div className="xy gap-2 px-4 py-3 bg-skin-base rounded-full">
-						<p className="text-lg">{shortenAddress(activeAccount.address)}</p>
+					<div className="xy gap-2 px-4 py-1.5 border border-skin-highlight rounded-full">
+						<p className="text-sm text-skin-highlight">{shortenAddress(activeAccount.address)}</p>
 						<button
 							className="p-1.5 -m-1.5 xy"
 							onClick={() => copyWithToast(activeAccount.address)}
 						>
-							<DocumentDuplicateIcon className="w-5 text-skin-back-arrow-icon" />
+							<CopyOutline size="16" />
 						</button>
 					</div>
 					<QR data={`vite:${activeAccount.address}`} className="mt-4" />
@@ -436,28 +452,30 @@ const Home = ({
 					onClose={() => sendingSet(false)}
 					className="flex flex-col"
 				>
-					<TokenSearchBar
-						onUserInput={(v) => {
-							if (balanceInfoMap) {
-								const search = v.toLocaleLowerCase();
-								filteredTokensInWalletSet(
-									tokensInWallet.filter((tokenApiInfo) => {
-										return (
-											tokenApiInfo.tokenAddress.includes(search) ||
-											tokenApiInfo.name.toLocaleLowerCase().includes(search) ||
-											addIndexToTokenSymbol(tokenApiInfo.symbol, tokenApiInfo.tokenIndex)
-												.toLocaleLowerCase()
-												.includes(search)
-										);
-									})
-								);
-							}
-						}}
-					/>
-					<div className="px-4 pb-4 mt-4 space-y-4 flex-1 overflow-scroll">
-						<div className="h-0.5 bg-skin-divider" />
+					<div className="px-5">
+						<TokenSearchBar
+							onUserInput={(v) => {
+								if (balanceInfoMap) {
+									const search = v.toLocaleLowerCase();
+									filteredTokensInWalletSet(
+										tokensInWallet.filter((tokenApiInfo) => {
+											return (
+												tokenApiInfo.tokenAddress.includes(search) ||
+												tokenApiInfo.name.toLocaleLowerCase().includes(search) ||
+												addIndexToTokenSymbol(tokenApiInfo.symbol, tokenApiInfo.tokenIndex)
+													.toLocaleLowerCase()
+													.includes(search)
+											);
+										})
+									);
+								}
+							}}
+						/>
+					</div>
+					<div className="pb-4 px-5 mt-4 space-y-4 flex-1 overflow-scroll">
+						<div className="h-px bg-white" />
 						{!filteredTokensInWallet.length ? (
-							<p className="leading-3 text-skin-secondary text-center">{i18n.nothingFound}</p>
+							<p className="leading-3 text-white text-center">{i18n.nothingFound}</p>
 						) : (
 							filteredTokensInWallet.map((tokenApiInfo) => (
 								<TokenCard

@@ -7,6 +7,10 @@ require('esbuild')
 	.build({
 		entryPoints: [
 			'src/assets/logo-blue-1024.png',
+			'src/assets/16.png',
+			'src/assets/32.png',
+			'src/assets/48.png',
+			'src/assets/128.png',
 			'src/main.tsx',
 			'src/background.ts',
 			'src/contentScript.ts',

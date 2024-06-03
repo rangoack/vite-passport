@@ -18,7 +18,7 @@ export const copyToClipboardAsync = (str = '') => {
 };
 
 export const toBiggestUnit = (num: string, decimals = 0) => {
-	return new BigNumber(num).dividedBy(10 ** decimals).toFixed();
+	return new BigNumber(num).dividedBy(10 ** decimals).toFixed(6);
 };
 
 export const toSmallestUnit = (num: string, decimals = 0) => {
