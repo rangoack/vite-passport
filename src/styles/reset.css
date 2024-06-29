@@ -2,8 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-body,
-#root {
+html,
+body {
+	height: 100%;
+}
+.root {
 	-webkit-font-smoothing: antialiased;
 	@apply h-[37rem] w-[calc(0.5625*37rem)] text-base overflow-scroll;
 }
